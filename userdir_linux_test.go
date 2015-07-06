@@ -1,3 +1,5 @@
+// +build linux
+
 package userdir_test
 
 import (
@@ -10,10 +12,10 @@ import (
 
 func TestGetDataHome(t *testing.T) {
 	d := userdir.GetDataHome()
-	require.True(t, strings.HasSuffix(d, "AppData/Roaming"))
+	require.True(t, strings.HasSuffix(d, ".local/share"))
 }
 
 func TestGetConfigHome(t *testing.T) {
 	d := userdir.GetConfigHome()
-	require.True(t, strings.HasSuffix(d, "AppData/Roaming"))
+	require.True(t, strings.HasSuffix(d, ".config"))
 }
