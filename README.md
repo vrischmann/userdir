@@ -14,6 +14,7 @@ fmt.Println(d)
 // Outputs something like this
 //   /home/vincent/.local/share        - on Linux
 //   C:/Users/vincent/AppData/Roaming  - on Windows
+//   /Users/vincent/Library            - on Mac OS X
 ```
 
 Windows specificities
