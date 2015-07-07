@@ -31,3 +31,8 @@ Further support
 ---------------
 
 Still needs support for other Unixes (might be as simple as using XDG there too) and Mac OS X.
+
+License
+-------
+
+*userdir* is under the MIT license.
