@@ -48,17 +48,16 @@ func getRoamingAppDataDir() string {
 	dwFlags := uint32(0)
 	var pwstr uintptr
 
-	ret, _, _ := procSHGetKnownFolderPath.Call(
+	// NOTE(vincent): ignore the returned HRESULT, because, according to https://msdn.microsoft.com/en-us/library/windows/desktop/bb762188(v=vs.85).aspx
+	//  - the E_FAIL error can't be returned since the rfid we pass is static and well-defined.
+	//  - the E_INVALIDARG error, as far as I know, can't be returned either since Roaming/AppData is always there.
+	_, _, _ = procSHGetKnownFolderPath.Call(
 		uintptr(unsafe.Pointer(&roamingAppData)),
 		uintptr(dwFlags),
 		uintptr(unsafe.Pointer(nil)),
 		uintptr(unsafe.Pointer(&pwstr)),
 	)
 	defer coTaskMemFree(pwstr)
-
-	if ret != 0 {
-		return ""
-	}
 
 	return normalizeWindowsPath(utf16PtrToString(pwstr))
 }
