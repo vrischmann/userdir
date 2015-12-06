@@ -19,20 +19,13 @@ func GetConfigHome() string {
 	return getRoamingAppDataDir()
 }
 
-type guid struct {
-	data1 uint32
-	data2 uint16
-	data3 uint16
-	data4 [8]byte
-}
-
 var (
 	modshell32               = syscall.NewLazyDLL("shell32.dll")
 	modole32                 = syscall.NewLazyDLL("ole32.dll")
 	procSHGetKnownFolderPath = modshell32.NewProc("SHGetKnownFolderPath")
 	procCoTaskMemFree        = modole32.NewProc("CoTaskMemFree")
 
-	roamingAppData = guid{
+	roamingAppData = syscall.GUID{
 		0x3EB685DB,
 		0x65F9,
 		0x4CF6,
