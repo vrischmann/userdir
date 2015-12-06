@@ -38,7 +38,6 @@ func coTaskMemFree(ptr uintptr) {
 }
 
 func getRoamingAppDataDir() string {
-	dwFlags := uint32(0)
 	var pwstr uintptr
 
 	// NOTE(vincent): ignore the returned HRESULT, because, according to https://msdn.microsoft.com/en-us/library/windows/desktop/bb762188(v=vs.85).aspx
@@ -46,17 +45,13 @@ func getRoamingAppDataDir() string {
 	//  - the E_INVALIDARG error, as far as I know, can't be returned either since Roaming/AppData is always there.
 	_, _, _ = procSHGetKnownFolderPath.Call(
 		uintptr(unsafe.Pointer(&roamingAppData)),
-		uintptr(dwFlags),
+		uintptr(uint32(0)),
 		uintptr(unsafe.Pointer(nil)),
 		uintptr(unsafe.Pointer(&pwstr)),
 	)
 	defer coTaskMemFree(pwstr)
 
-	return normalizeWindowsPath(utf16PtrToString(pwstr))
-}
-
-func normalizeWindowsPath(s string) string {
-	return strings.Replace(s, "\\", "/", -1)
+	return strings.Replace(utf16PtrToString(pwstr), "\\", "/", -1)
 }
 
 func utf16PtrToString(str uintptr) string {
